@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.tridion.deployer.Module"/>
+<fullyQualifiedTypeName name="com.tridion.configuration.Configuration"/>
+<fullyQualifiedTypeName name="com.tridion.deployer.Processor"/>
+<fullyQualifiedTypeName name="com.tridion.configuration.ConfigurationException"/>
+<fullyQualifiedTypeName name="org.slf4j.LoggerFactory"/>
+<fullyQualifiedTypeName name="com.tridion.deployer.extension.PurgeCache"/>
+<fullyQualifiedTypeName name="com.tridion.transport.transportpackage.TransportPackage"/>
+<fullyQualifiedTypeName name="com.tridion.deployer.ProcessingException"/>
+<fullyQualifiedTypeName name="java.lang.Override"/>
+<fullyQualifiedTypeName name="com.tridion.transport.transportpackage.PageMetaData"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.tridion.transport.transportpackage.Page"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
+<fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.util.Objects"/>
+</qualifiedTypeNameHistroy>

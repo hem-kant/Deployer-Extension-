@@ -1,0 +1,116 @@
+/*
+ * Copyright 2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.tridion.deployer.extension;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.tridion.configuration.Configuration;
+import com.tridion.configuration.ConfigurationException;
+import com.tridion.deployer.Module;
+import com.tridion.deployer.ProcessingException;
+import com.tridion.deployer.Processor;
+import com.tridion.transport.transportpackage.Page;
+import com.tridion.transport.transportpackage.PageMetaData;
+import com.tridion.transport.transportpackage.TransportPackage;
+
+
+@SuppressWarnings("deprecation")
+public class PurgeCache extends Module {
+	
+	protected static Logger log = LoggerFactory.getLogger(PurgeCache.class);
+	
+	public PurgeCache(Configuration config, Processor processor) throws ConfigurationException
+	{
+		super(config,processor);
+	}
+	
+	// This is called once for each Transport Package that is deployed.
+	@Override
+	public void process(TransportPackage data) throws ProcessingException 
+	{
+		 log.debug("This is custom logs");
+		 String USER_AGENT = "Mozilla/5.0";
+		 log.debug("PublicationId : " + String.valueOf(data.getProcessorInstructions().getPublicationId().getItemId()));
+		try
+		{
+			
+		 log.debug("Custom Code :- Entered in the try block");
+		 PageMetaData pageFile = (PageMetaData)data.getMetaDataFile("Pages");
+		 log.debug("Custom code :- Reading PageMetaData");
+		 if (pageFile != null)
+         {
+             List<Page> pages = pageFile.getPages();
+             for ( Page page : pages )
+             {
+            	 Properties prop = new Properties(); 
+            	 String fileName="app.config";
+            	 
+            	 InputStream is = null;
+            	 try {
+            		    is = new FileInputStream(fileName);
+            		} catch (FileNotFoundException ex) {
+            			log.debug("Custom code :- For loop to get the page url ");
+            		}
+            		try {
+            		    prop.load(is);
+            		} catch (IOException ex) {
+            			log.debug("Custom code :- For loop to get the page url ");
+            		}
+            	 log.debug("Custom code :- For loop to get the page url ");
+	             log.debug("http://localhost:92"+page.getURLPath()+"?PurgeCache=true"); 
+	             
+	             String URL = "http://localhost:92"+page.getURLPath()+"?PurgeCache=true";
+	             
+	             URL obj = new URL(URL);
+	             
+	             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+	             con.setConnectTimeout(5000);
+	             log.debug("Custom code :- timeout " + 5000);
+	             con.setRequestMethod("GET");
+	             con.setRequestProperty("User-Agent", USER_AGENT);
+	             int responseCode = con.getResponseCode();
+
+	             log.debug("Response Code : " + responseCode);
+	             
+	             if (responseCode == HttpURLConnection.HTTP_OK)
+	             {
+	                log.debug("Custom Deployer, Cache has been removed and the responseCode is : " + responseCode + "- for URL " + URL);
+	             }
+	             
+	             log.debug("Page ID :" + String.valueOf(page.getId().getItemId()));
+	             
+             }
+         }
+		 log.debug("Purging is done !! Please check the web page!!");
+		}
+		catch (Exception e)
+        {
+              log.error("Could not get path for publication.", e);
+              return;
+        }
+	}
+}
